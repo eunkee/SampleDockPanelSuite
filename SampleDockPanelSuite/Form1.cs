@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -29,9 +30,7 @@ namespace SampleDockPanelSuite
         }
         private void Form1_Load(object sender, EventArgs e)
         {
-            //처음 메인 패널 없을 때 생성방법
-            //FormDashboard formDashboard = new(this);
-            //formDashboard.Show(dockPanel);
+
 
             m_deserializeDockContent = new DeserializeDockContent(GetContentFromPersistString);
             m_outputWindow1 = new FormOutput1();
@@ -56,8 +55,19 @@ namespace SampleDockPanelSuite
                 SetSchema(this.menuItemSchemaVS2015Dark, null);
             }
 
+            //체크상태 적용
+            menuItemSchemaVS2015Light.Checked = (sender == menuItemSchemaVS2015Light);
+            menuItemSchemaVS2015Blue.Checked = (sender == menuItemSchemaVS2015Blue);
+            menuItemSchemaVS2015Dark.Checked = (sender == menuItemSchemaVS2015Dark);
+
+
             SetAllowEndUserDocking(RegistryDockSample.AllowEndUserDocking);
             dockPanel.DocumentStyle = DocumentStyle.DockingSdi;
+
+
+            //처음 메인 패널 없을 때 생성방법
+            //FormDashboard formDashboard = new(this);
+            //formDashboard.Show(dockPanel);
 
             //도킹패널 컨피그 로드
             string configFile = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "DockPanel.config");
@@ -65,6 +75,8 @@ namespace SampleDockPanelSuite
                 dockPanel.LoadFromXml(configFile, m_deserializeDockContent);
 
             m_bSaveLayout = true;
+
+            //mainMenu.Visible = false;
         }
 
         private IDockContent GetContentFromPersistString(string persistString)
@@ -75,7 +87,7 @@ namespace SampleDockPanelSuite
                 return m_outputWindow2;
             else
             {
-                FormDashboard formDashboard = new();
+                FormDashboard formDashboard = new(this);
                 return formDashboard;
             }
         }
@@ -121,8 +133,12 @@ namespace SampleDockPanelSuite
             }
             else if (sender == this.menuItemSchemaVS2015Dark)
             {
-                this.dockPanel.Theme = this.vS2015DarkTheme1;
-                vsToolStripExtender1.SetStyle(this.mainMenu, VisualStudioToolStripExtender.VsVersion.Vs2015, vS2015DarkTheme1);
+
+                ThemeBase defaultTheme = CreateCustomDarkTheme();
+                this.dockPanel.Theme = defaultTheme;
+
+                //this.dockPanel.Theme = this.vS2015DarkTheme1;
+                vsToolStripExtender1.SetStyle(this.mainMenu, VisualStudioToolStripExtender.VsVersion.Vs2015, this.dockPanel.Theme);
                 RegistryDockSample.Theme = CUSTOM_THEME.BLACK;
             }
 
@@ -134,6 +150,73 @@ namespace SampleDockPanelSuite
             //임시 저장했던 닥 패널 불러오기
             if (File.Exists(configFile))
                 dockPanel.LoadFromXml(configFile, m_deserializeDockContent);
+        }
+
+        public static System.Drawing.Color LIGHT_COLOR = System.Drawing.Color.FromArgb(91, 190, 202);
+        public static System.Drawing.Color LINE_COLOR = System.Drawing.Color.FromArgb(21, 32, 54);
+        public static System.Drawing.Color BACKGROUND_COLOR = System.Drawing.Color.FromArgb(16, 15, 27);
+        public static System.Drawing.Color BUTTON_BACKGROUND_COLOR = System.Drawing.Color.FromArgb(30, 34, 50);
+        public static System.Drawing.Color TEXT_COLOR_NORMAL = System.Drawing.Color.FromArgb(152, 173, 192);
+        public static System.Drawing.Color TEXT_COLOR_DARK = System.Drawing.Color.FromArgb(79, 90, 108);
+        public static System.Drawing.Color TEXT_COLOR_WHITE = System.Drawing.Color.FromArgb(230, 232, 235);
+
+        private VS2015DarkThemeChild CreateCustomDarkTheme()
+        {
+            VS2015DarkThemeChild customTheme = new VS2015DarkThemeChild();
+            customTheme.ColorPalette.DockTarget.GlyphBorder = LIGHT_COLOR;
+            customTheme.ColorPalette.CommandBarToolbarOverflowHovered.Background = Color.FromArgb(114, 91, 190, 202);
+            customTheme.ColorPalette.MainWindowActive.Background = BACKGROUND_COLOR;
+
+            // 바 캡션 타이틀
+            customTheme.ColorPalette.ToolWindowCaptionActive.Text = LIGHT_COLOR;
+            customTheme.ColorPalette.ToolWindowCaptionActive.Grip = LINE_COLOR;
+            customTheme.ColorPalette.ToolWindowCaptionActive.Background = LINE_COLOR;
+            customTheme.ColorPalette.ToolWindowCaptionInactive.Text = TEXT_COLOR_NORMAL;
+            customTheme.ColorPalette.ToolWindowCaptionInactive.Grip = LINE_COLOR;
+            customTheme.ColorPalette.ToolWindowCaptionInactive.Background = LINE_COLOR;
+
+            // 바 캡션 버튼
+            customTheme.ColorPalette.ToolWindowCaptionActive.Button = LIGHT_COLOR;
+            customTheme.ColorPalette.ToolWindowCaptionInactive.Button = TEXT_COLOR_NORMAL;
+
+            // 버튼 테두리
+            customTheme.ColorPalette.TabButtonUnselectedTabHoveredButtonHovered.Background = LIGHT_COLOR;
+            customTheme.ColorPalette.TabButtonUnselectedTabHoveredButtonHovered.Border = LIGHT_COLOR;
+            customTheme.ColorPalette.ToolWindowCaptionButtonActiveHovered.Background = LIGHT_COLOR;
+            customTheme.ColorPalette.ToolWindowCaptionButtonActiveHovered.Border = LIGHT_COLOR;
+
+            // 탭 색상
+            customTheme.ColorPalette.ToolWindowTabSelectedInactive.Background = BUTTON_BACKGROUND_COLOR;
+            customTheme.ColorPalette.ToolWindowTabSelectedInactive.Text = TEXT_COLOR_WHITE;
+            customTheme.ColorPalette.ToolWindowTabUnselected.Text = TEXT_COLOR_NORMAL;
+            customTheme.ColorPalette.ToolWindowTabUnselectedHovered.Background = Color.FromArgb(66, 84, 119);
+            customTheme.ColorPalette.ToolWindowTabUnselectedHovered.Text = TEXT_COLOR_WHITE;
+
+            // Auto Hide
+            customTheme.ColorPalette.AutoHideStripDefault.Background = BUTTON_BACKGROUND_COLOR;
+            customTheme.ColorPalette.AutoHideStripDefault.Text = TEXT_COLOR_NORMAL;
+            customTheme.ColorPalette.AutoHideStripDefault.Border = TEXT_COLOR_DARK;
+            customTheme.ColorPalette.AutoHideStripHovered.Background = BUTTON_BACKGROUND_COLOR;
+            customTheme.ColorPalette.AutoHideStripHovered.Text = TEXT_COLOR_NORMAL;
+            customTheme.ColorPalette.AutoHideStripHovered.Border = LIGHT_COLOR;
+
+            // 바 테두리
+            customTheme.ColorPalette.ToolWindowBorder = Color.FromArgb(40, 41, 56);
+
+            customTheme.Skin.AutoHideStripSkin.TextFont = new Font("Noto Sans CJK KR Regular", 9.75F);
+            customTheme.Skin.DockPaneStripSkin.TextFont = new Font("Noto Sans CJK KR Regular", 9.75F);
+
+            customTheme.Skin.AutoHideStripSkin.DockStripBackground.StartColor = BUTTON_BACKGROUND_COLOR;
+            customTheme.Skin.AutoHideStripSkin.DockStripBackground.EndColor = BUTTON_BACKGROUND_COLOR;
+
+            customTheme.ColorPalette.TabSelectedInactive.Background = BUTTON_BACKGROUND_COLOR;
+            customTheme.ColorPalette.ToolWindowCaptionInactive.Background = BUTTON_BACKGROUND_COLOR;
+            customTheme.ColorPalette.ToolWindowCaptionInactive.Grip = BUTTON_BACKGROUND_COLOR;
+            customTheme.ColorPalette.ToolWindowTabUnselected.Background = BUTTON_BACKGROUND_COLOR;
+            
+            customTheme.SetImageService(customTheme);
+
+            return customTheme;
         }
 
         private void MenuItemExit_Click(object sender, EventArgs e)
@@ -219,6 +302,11 @@ namespace SampleDockPanelSuite
                 }
             }
             catch { }
+        }
+
+        private void mainMenu_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
         }
     }
 }

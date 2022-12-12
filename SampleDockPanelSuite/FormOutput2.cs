@@ -25,48 +25,48 @@ namespace SampleDockPanelSuite
         delegate void CrossThreadSafetyText(string text);
         public void SetLogTextBox1(string text)
         {
-            if (TextBox1 != null)
-            {
-                if (TextBox1.InvokeRequired)
-                {
-                    try
-                    {
-                        if (TextBox1 != null && this != null)
-                        {
-                            TextBox1.Invoke(new CrossThreadSafetyText(SetLogTextBox1), text);
-                        }
-                    }
-                    finally { }
-                }
-                else
-                {
-                    try
-                    {
-                        string AppendMessage = $"{DateTime.Now:HH:mm:ss.fff} {text}\r\n";
-                        TextBox1.AppendText(AppendMessage);
+            //if (TextBox1 != null)
+            //{
+            //    if (TextBox1.InvokeRequired)
+            //    {
+            //        try
+            //        {
+            //            if (TextBox1 != null && this != null)
+            //            {
+            //                TextBox1.Invoke(new CrossThreadSafetyText(SetLogTextBox1), text);
+            //            }
+            //        }
+            //        finally { }
+            //    }
+            //    else
+            //    {
+            //        try
+            //        {
+            //            string AppendMessage = $"{DateTime.Now:HH:mm:ss.fff} {text}\r\n";
+            //            TextBox1.AppendText(AppendMessage);
 
-                        if (TextBox1.Lines.Length > nLimitLines)
-                        {
-                            LinkedList<string> tempLines = new(TextBox1.Lines);
+            //            if (TextBox1.Lines.Length > nLimitLines)
+            //            {
+            //                LinkedList<string> tempLines = new(TextBox1.Lines);
 
-                            while ((tempLines.Count - nLimitLines) > 0)
-                            {
-                                tempLines.RemoveFirst();
-                            }
+            //                while ((tempLines.Count - nLimitLines) > 0)
+            //                {
+            //                    tempLines.RemoveFirst();
+            //                }
 
-                            TextBox1.Lines = tempLines.ToArray();
-                        }
-                        TextBox1.Select(TextBox1.Text.Length, 0);
-                        TextBox1.ScrollToCaret();
-                    }
-                    finally { }
-                }
-            }
+            //                TextBox1.Lines = tempLines.ToArray();
+            //            }
+            //            TextBox1.Select(TextBox1.Text.Length, 0);
+            //            TextBox1.ScrollToCaret();
+            //        }
+            //        finally { }
+            //    }
+            //}
         }
 
         private void ClearToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            TextBox1.Text = string.Empty;
+            //TextBox1.Text = string.Empty;
         }
     }
 }

@@ -56,6 +56,7 @@ namespace SampleDockPanelSuite
             // 
             // mainMenu
             // 
+            this.mainMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(15)))), ((int)(((byte)(27)))));
             this.mainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuItemFile,
             this.menuItemView,
@@ -66,6 +67,7 @@ namespace SampleDockPanelSuite
             this.mainMenu.Size = new System.Drawing.Size(579, 24);
             this.mainMenu.TabIndex = 1;
             this.mainMenu.Text = "menuStrip1";
+            this.mainMenu.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.mainMenu_ItemClicked);
             // 
             // menuItemFile
             // 
@@ -78,7 +80,7 @@ namespace SampleDockPanelSuite
             // menuItemExit
             // 
             this.menuItemExit.Name = "menuItemExit";
-            this.menuItemExit.Size = new System.Drawing.Size(180, 22);
+            this.menuItemExit.Size = new System.Drawing.Size(124, 22);
             this.menuItemExit.Text = "끝내기(&E)";
             this.menuItemExit.Click += new System.EventHandler(this.MenuItemExit_Click);
             // 
@@ -200,8 +202,9 @@ namespace SampleDockPanelSuite
             // 
             // dockPanel
             // 
+            this.dockPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(15)))), ((int)(((byte)(27)))));
             this.dockPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dockPanel.DockBackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.dockPanel.DockBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(15)))), ((int)(((byte)(27)))));
             this.dockPanel.DockBottomPortion = 150D;
             this.dockPanel.DockLeftPortion = 200D;
             this.dockPanel.DockRightPortion = 200D;

@@ -9,27 +9,35 @@ namespace SampleDockPanelSuite
     {
         private readonly int PINT = 3;
 
-        public FormDashboard()
+        private Form1 parentForm;
+
+        public FormDashboard(Form1 parentForm)
         {
             InitializeComponent();
             AutoScaleMode = AutoScaleMode.Dpi;
+            this.parentForm = parentForm;
         }
 
         private void FormDashboard_Load(object sender, EventArgs e)
         {
-            listView1.Location = new Point(PINT, PINT);
+            pictureBox1.Location = new Point(PINT, PINT);
         }
 
         //Refresh
         private void RefreshToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            listView1.Refresh();
+            pictureBox1.Refresh();
         }
 
         //control change size
         private void FormDashboard_SizeChanged(object sender, EventArgs e)
         {
-            listView1.Size = new Size((this.Width) - (PINT * 2), this.Height - (PINT * 2));
+            pictureBox1.Size = new Size((this.Width) - (PINT * 2), this.Height - (PINT * 2));
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
